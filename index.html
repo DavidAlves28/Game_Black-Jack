@@ -14,10 +14,15 @@
 <body>
   <header>
     
-    <h1>♣️ ♠️ Black Jack ♦️ ♥️ </h1>
+    <h1>♣️ ♠️ Black Jack </h1> <h1 class="naipe"> ♦️ ♥️ </h1>
 
   </header>
   <main class="container">
+    <section class="botoes" >
+      <button class="botao" onclick="novacarta(event)"> Comprar cartas</button>
+      <button class="botao2" onclick="pararJogo(event)"> Parar</button>
+      <button class="botao3" onclick="reiniciar(event)"> Reiniciar</button>
+    </section>
     <section class="containerJ">
       <h2 class="jogador"></h2>
       <h2 class="cartaJ"></h2>
@@ -29,8 +34,6 @@
       <h2 class="cartaC"></h2>
       <h2 class="pontuacaoC"></h2>
     </section>
-    <button class="botao" onclick="novacarta(event)"> Comprar carta</button>
-    <button class="botao2" onclick="pararJogo(event)"> Quero parar</button>
   </main>
   <section class="vencedor"></section>
 </body>

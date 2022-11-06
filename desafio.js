@@ -1,5 +1,6 @@
 let jogo = confirm("Vamos começar ?")
 let nomeJogador = prompt("Insira seu Nome ou Apelido")
+console.log(nomeJogador)
 while (nomeJogador.length === 0) {
     nomeJogador = prompt("Insira seu Nome ou Apelido")
 };
@@ -16,7 +17,6 @@ function comprarCarta() {
 
     // Cria array de naipes
     const naipes = ["♦️", "♥️", "♣️", "♠️"]
-
     // Sorteia uma carta
     const numero = cartas[Math.floor(Math.random() * 13)]
 
@@ -42,100 +42,125 @@ function comprarCarta() {
 
     return carta
 }
+
+let carta1Jogador1;
+let carta2Jogador1;
+let carta1Jogador2;
+let carta2Jogador2;
+let carta3Jogador1;
+let carta3Jogador2;
+
 if (jogo) {
-    let carta1Jogador1 = comprarCarta()
-    let carta2Jogador1 = comprarCarta()
-    let carta3Jogador1
-    let carta1Jogador2 = comprarCarta()
-    let carta2Jogador2 = comprarCarta()
-    let carta3Jogador2
+    // Comprar cartas ao iniciar jogo!
+    carta1Jogador1 = comprarCarta()
+    carta2Jogador1 = comprarCarta()
+    carta1Jogador2 = comprarCarta()
+    carta2Jogador2 = comprarCarta()
 
-    let pontosJogador1 = carta1Jogador1.valor + carta2Jogador1.valor
-    let pontosJogador2 = carta1Jogador2.valor + carta2Jogador2.valor
+    // Regra ->  Se as duas cartas compradas forem dois AA entao faz a recompra novamente!
+    if (carta1Jogador1.valor === 11 && carta2Jogador1.valor === 11 || carta1Jogador2.valor === 11 && carta2Jogador2.valor === 11) {
+        carta1Jogador1 = comprarCarta()
+        carta2Jogador1 = comprarCarta()
+        carta1Jogador1 = comprarCarta()
+        carta2Jogador2 = comprarCarta()
+    }
 
-    //verifica vencedor e botao comprar cartas
     let jogador1;
     let jogador2;
     let empate;
+
+    let pontosJogador1 = carta1Jogador1.valor + carta2Jogador1.valor;
+    let pontosJogador2 = carta1Jogador2.valor + carta2Jogador2.valor;
+    // verificação de pontos ao começar jogo!
     jogador2 = pontosJogador2 === 21 ? `Jogador Dois venceu ! ` : ""
     jogador1 = pontosJogador1 === 21 ? `Jogador Um venceu ! ` : ""
-    jogador1 = pontosJogador2 > 21  ? `Jogador Um venceu ! ` : ""
+    jogador1 = pontosJogador2 > 21 ? `Jogador Um venceu ! ` : ""
     jogador2 = pontosJogador1 > 21 ? `Jogador Dois venceu ! ` : ""
-    empate = pontosJogador1 === pontosJogador2 ? "Empate, vamos jogar ?" : ""
+    empate = pontosJogador1 >= 21 && pontosJogador2 >= 21 && pontosJogador1 === pontosJogador2 ? "Empate, vamos jogar ?" : ""
+    if(pontosJogador1 === 21 || jogador2 === 21){
+       Location.reload()
+    } 
+    // funcao para compra da terceira carta!
     function novacarta(event) {
         event.preventDefault()
-        console.log(event.target.value)
-        if (pontosJogador1 < 21) {
-            carta3Jogador1 = comprarCarta()
-            // Se jogador comprar carta e pontos for menor que 21 entao o computador compra uma carta 
+        if (jogo) {
             if (pontosJogador1 < 21) {
-                carta3Jogador2 = comprarCarta()
+                carta3Jogador1 = comprarCarta()
+                // Se jogador comprar carta e pontos for menor que 21 entao o computador compra uma carta 
+                if (pontosJogador1 < 21) {
+                    carta3Jogador2 = comprarCarta()
+                }
+                let totalJ = pontosJogador1 += carta3Jogador1.valor;
+                let totalC = pontosJogador2 += carta3Jogador2.valor;
+
+                jogador2 = totalC=== 21 && totalJ <21 ? `Jogador Dois venceu ! ` : ""
+                jogador1 = totalJ=== 21 && totalC<21 ? `Jogador Um venceu ! ` : ""
+                jogador1 = totalC> 21 && totalJ < totalC? `Jogador Um venceu ! Jogador Dois estourou primeiro ` : ""
+                jogador2 = totalJ> 21 && totalC < totalJ ? `Jogador Dois venceu ! Jogador UM estourou primeiro ` : ""
+                empate = totalJ>= 21 && totalC>= 21 && totalJ=== totalC? "Empate, vamos jogar ?" : ""
+                
+                // ATUALIZA PONTOS JOGODOR
+                const atualizarPontosJ = document.querySelector(".totalJ")
+                atualizarPontosJ.innerHTML = `PONTOS : ${totalJ}`;
+                const cartasJ = document.querySelector(".cartaJ")
+                cartasJ.innerHTML = (` Cartas : ${carta1Jogador1.texto}, ${carta2Jogador1.texto},${carta3Jogador1.texto}`)
+                const mostraVencedor = document.querySelector(".vencedor");
+                const vencedor = document.createElement("h2");
+                const pontoVencedor = document.createTextNode(` ${jogador1}${jogador2}${empate}`);
+                vencedor.appendChild(pontoVencedor);
+                vencedor.setAttribute("class", "vencedorTag");
+                mostraVencedor.insertAdjacentElement("beforeend", vencedor);
+
+                // verificacao de pontos 
+                // Verificação para imprimir pontos e cartas do jogador 2 
+                if (pontosJogador1 >= 21 || pontosJogador2 >= 21) {   
+                    const pontuacaoC = document.querySelector(".totalC");
+                    pontuacaoC.innerHTML = `PONTOS : ${totalC}`;
+                    const cartaC = document.querySelector(".cartaPC");
+                    cartaC.innerHTML = (` Cartas : ${carta1Jogador2.texto}, ${carta2Jogador2.texto},${carta3Jogador2.texto}`);
+
+        
+                    jogo = false //  O false impede que compre cartas!
+                }
+
             }
-            let totalJ = pontosJogador1 += carta3Jogador1.valor;
-            let totalC = pontosJogador2 += carta3Jogador2.valor;
-
-            // ATUALIZA PONTOS JOGODOR
-            const atualizarPontosJ = document.querySelector(".totalJ")
-            atualizarPontosJ.innerHTML = `PONTOS : ${totalJ}`
-            // ATUALIZA PONTOS COMPUTADOR
-            const atualizarPontosC = document.querySelector(".totalC")
-            atualizarPontosC.innerHTML = `PONTOS : ${totalC}`
-            console.log(pontosJogador1);
-            console.log(pontosJogador2);
-            console.log(carta3Jogador1);
-            console.log(carta3Jogador2);
-            // adicionar 3 carta a tela Jogador
-            const cartaJ = document.querySelector(".cartaJ")
-            const carta3 = document.createTextNode(`${carta3Jogador1.texto}`)
-            cartaJ.appendChild(carta3)
-            // adiciona 3 carta a tela computador
-            const cartaC = document.querySelector(".cartaC")
-            const carta3C = document.createTextNode(`${carta3Jogador2.texto}`)
-            cartaC.appendChild(carta3C)
-            // verificacao de pontos 
-            jogador2 = pontosJogador2 === 21 ? `Computador venceu ! ` : ""
-            jogador1 = pontosJogador1 === 21 ? `Jogador Um venceu ! ` : ""
-            jogador1 = pontosJogador2 > 21 ? `Jogador Um venceu ! ` : ""
-            jogador2 = pontosJogador1 > 21 ? `Computador venceu ! ` : ""
-            empate = pontosJogador1 === pontosJogador2 ? "Empate, vamos jogar ?" : ""
-            jogador2 = pontosJogador1 > 21 && pontosJogador2 < pontosJogador1 ? `Computador venceu ! ` : ""
-            jogador1 = pontosJogador2 > 21 && pontosJogador1 < pontosJogador2 ? `Jogador Um venceu ! ` : ""
 
 
+            return
         }
-        // BOTAO PARA PARAR JOGO JOGADOR
-
-        // mostra vencedor
-
-        const mostraVencedor = document.querySelector(".vencedor")
-        const vencedor = document.createElement("h2")
-        const pontoVencedor = document.createTextNode(` ${jogador1}${jogador2}${empate}`)
-        vencedor.appendChild(pontoVencedor)
-        vencedor.setAttribute("class", "vencedorTag")
-        mostraVencedor.insertAdjacentElement("beforeend", vencedor)
-
-        return
     }
+
     // funcao parar jogo
     function pararJogo(event) {
         event.preventDefault()
-        if (jogo) {
-            jogador2 = pontosJogador2 > pontosJogador1 ? `Computador venceu ! ` : ""
-            jogador1 = pontosJogador1 > pontosJogador2 ? `Jogador Um venceu ! ` : ""
-            empate = pontosJogador1 === pontosJogador2 ? "Empate, vamos jogar ?" : ""
 
-            const mostraVencedor = document.querySelector(".vencedor")
-            const vencedor = document.createElement("h2")
-            const pontoVencedor = document.createTextNode(` ${jogador1}${jogador2}${empate}`)
-            vencedor.appendChild(pontoVencedor)
-            vencedor.setAttribute("class", "vencedorTag")
-            mostraVencedor.insertAdjacentElement("beforeend", vencedor)
+        if (jogo) {
+          
+            let totalC = pontosJogador2;
+
+            jogador2 = pontosJogador2 > pontosJogador1 ? `Computador venceu ! ` : "";
+            jogador1 = pontosJogador1 > pontosJogador2 ? `Jogador Um venceu ! ` : "";
+            empate = pontosJogador1 === pontosJogador2 ? "Empate, vamos jogar ?" : "";
+
+            const mostraVencedor = document.querySelector(".vencedor");
+            const vencedor = document.createElement("h2");
+            const pontoVencedor = document.createTextNode(` ${jogador1}${jogador2}${empate}`);
+            vencedor.appendChild(pontoVencedor);
+            vencedor.setAttribute("class", "vencedorTag");
+            mostraVencedor.insertAdjacentElement("beforeend", vencedor);
+
+            // Regra ->  Mostar cartas e pontuacao do computador!
+            const pontuacaoC = document.querySelector(".totalC");
+            pontuacaoC.innerHTML = `Pontos : ${totalC}`;
+            const cartaC = document.querySelector(".cartaPC");
+            cartaC.innerHTML = ` Cartas : ${carta1Jogador2.texto}, ${carta2Jogador2.texto}`;
+
         }
 
-        return
+        return jogo = false
     }
 
-    //Pontuacao jogador1 
+    // Imprimi Pontuacao jogador1 
     const pontuacao = document.querySelector(".pontuacaoJ")
     const pontos = document.createElement("h3")
     const pontoJ = document.createTextNode(` Pontos : ${pontosJogador1}`)
@@ -143,35 +168,36 @@ if (jogo) {
     pontos.setAttribute("class", "totalJ")
     pontuacao.insertAdjacentElement("beforeend", pontos)
 
-    // Pontuação jogador 2 computador
+    // Imprimi Pontuação jogador 2 computador
     const pontuacaoC = document.querySelector(".pontuacaoC")
     const pontosC = document.createElement("h3")
-    const pontoC = document.createTextNode(`Pontos : ${pontosJogador2}`)
+    const pontoC = document.createTextNode(`Pontos : ${carta1Jogador2.valor}`)
     pontosC.appendChild(pontoC)
     pontosC.setAttribute("class", "totalC")
     pontuacaoC.insertAdjacentElement("beforeend", pontosC)
 
-    // Carta Jogador 1
+    //  Imprimi Carta Jogador 1
     const cartaJ = document.querySelector(".cartaJ")
     const cartasJ = document.createElement("h3")
     const cartaConteudo = document.createTextNode(` Cartas : ${carta1Jogador1.texto}, ${carta2Jogador1.texto} `)
     cartasJ.appendChild(cartaConteudo)
     cartaJ.insertAdjacentElement("beforeend", cartasJ)
 
-    // Carta Jogador Dois COmputador
+    // Imprimi Carta Jogador Dois Computador
     const cartaC = document.querySelector(".cartaC")
     const cartasC = document.createElement("h3")
-    const cartaConteudoC = document.createTextNode(` Cartas : ${carta1Jogador2.texto}, ${carta2Jogador2.texto}`)
+    const cartaConteudoC = document.createTextNode(` Cartas : ${carta1Jogador2.texto}`)
     cartasC.appendChild(cartaConteudoC)
+    cartasC.setAttribute("class", "cartaPC")
     cartaC.insertAdjacentElement("beforeend", cartasC)
 
 
 
 
 
+} else { alert("o jogo terminou!"), jogo = false }
+// Reinicia joga , no entanto apenas da Refresh na página!
+function reiniciar(event) {
+    event.preventDefault()
+    location.reload()
 }
-
-
-
-
-
