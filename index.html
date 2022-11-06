@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future4 - Blackjack</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="desafio.js" defer></script>
+  
+</head>
+
+<body>
+  <header>
+    
+    <h1>♣️ ♠️ Black Jack </h1> <h1 class="naipe"> ♦️ ♥️ </h1>
+
+  </header>
+  <main class="container">
+    <section class="botoes" >
+      <button class="botao" onclick="novacarta(event)"> Comprar cartas</button>
+      <button class="botao2" onclick="pararJogo(event)"> Parar</button>
+      <button class="botao3" onclick="reiniciar(event)"> Reiniciar</button>
+    </section>
+    <section class="containerJ">
+      <h2 class="jogador"></h2>
+      <h2 class="cartaJ"></h2>
+      <h2 class="pontuacaoJ">
+        
+    </section>
+    <section class="containerC">
+      <h2 class="computador"> Jogador Dois: Computador</h2>
+      <h2 class="cartaC"></h2>
+      <h2 class="pontuacaoC"></h2>
+    </section>
+  </main>
+  <section class="vencedor"></section>
+</body>
+
+</html>
