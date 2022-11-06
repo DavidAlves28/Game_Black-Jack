@@ -8,6 +8,11 @@ O projeto criado em JavaScript , estilizado com CSS e  feito em HTML  com manipu
  
 Aparentimente projeto simples mas que demanda uma lógica complexa!
 
+### Tela Desktop 
+![Desktop_Black-Jack](./img/Desktop-blackjack.png)
+### Responsivo !
+
+![responsive_black-jack](./img/responsiv_blackJack-2.jpg)
 ## Regras do jogo 
 - Dois jogadores (Usuário e Computador);
 - Cada jogador começa com duas cartas;
@@ -22,4 +27,8 @@ Aparentimente projeto simples mas que demanda uma lógica complexa!
 - Você e o Computador receberá duas cartas; 
 - Para comprar cartas clique no botão "Comprar cartas"
 - Para para jogo clique em "Para jogo"
-- se o usuário clicar em "cancelar" o jogo terminar,
+- se o usuário clicar em "cancelar" o jogo terminar.
+
+
+
+## Obrigado pela atenção e se puder compartilhar sua crítica comigo, entre em contato! 
